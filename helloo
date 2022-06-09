@@ -5,6 +5,7 @@ class "chat_app::sigh_up.dart::SignUp" {
   +State<SignUp> createState()
 }
 
+
 "flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::sigh_up.dart::SignUp"
 
 class "chat_app::sigh_up.dart::_SignUpState" {
