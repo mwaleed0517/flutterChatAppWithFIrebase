@@ -1,0 +1,238 @@
+@startuml
+set namespaceSeparator ::
+
+class "chat_app::sigh_up.dart::SignUp" {
+  +State<SignUp> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::sigh_up.dart::SignUp"
+
+class "chat_app::sigh_up.dart::_SignUpState" {
+  +Auth auth
+  +DatabaseMethods databaseMethods
+  -GlobalKey<FormState> _formKey
+  +bool passwordVisible
+  +bool pageLoading
+  +TextEditingController userNameTEC
+  +TextEditingController emailTEC
+  +TextEditingController passTEC
+  +TextEditingController rePassTEC
+  +dynamic signUpFuncCall()
+  +Widget build()
+}
+
+"chat_app::sigh_up.dart::_SignUpState" o-- "chat_app::firebase_con.dart::Auth"
+"chat_app::sigh_up.dart::_SignUpState" o-- "chat_app::services::database.dart::DatabaseMethods"
+"chat_app::sigh_up.dart::_SignUpState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"chat_app::sigh_up.dart::_SignUpState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::sigh_up.dart::_SignUpState"
+
+class "chat_app::helper::helperfunctions.dart::HelperFunctions" {
+  {static} +String sharedPreferenceUserLoggedInKey
+  {static} +String sharedPreferenceUserNameKey
+  {static} +String sharedPreferenceUserEmailKey
+  {static} +Future<bool> saveUserLoggedInSharedPreference()
+  {static} +Future<bool> saveUserNameSharedPreference()
+  {static} +Future<bool> saveUserEmailSharedPreference()
+  {static} +Future<bool?> getUserLoggedInSharedPreference()
+  {static} +Future<String?> getUserNameSharedPreference()
+  {static} +Future<String?> getUserEmailSharedPreference()
+}
+
+class "chat_app::helper::theme.dart::CustomTheme" {
+  {static} +Color colorAccent
+  {static} +Color textColor
+}
+
+"chat_app::helper::theme.dart::CustomTheme" o-- "dart::ui::Color"
+
+class "chat_app::helper::constants.dart::Constants" {
+  {static} +String myName
+}
+
+class "chat_app::firebase_con.dart::Auth" {
+  -FirebaseAuth _auth
+  +Future<dynamic> signInFunc()
+  +Future<dynamic> signUpFunc()
+  +Future<dynamic> resetPassFunc()
+  +Future<dynamic> signOutFunc()
+}
+
+"chat_app::firebase_con.dart::Auth" o-- "firebase_auth::firebase_auth.dart::FirebaseAuth"
+
+class "chat_app::firebase_con.dart::User" {
+  +String userID
+}
+
+class "chat_app::services::database.dart::DatabaseMethods" {
+  +Future<void> addUserInfo()
+  +dynamic getUserInfo()
+  +dynamic searchByName()
+  +Future<bool> addChatRoom()
+  +dynamic getChats()
+  +Future<void> addMessage()
+  +dynamic getUserChats()
+}
+
+class "chat_app::chat_page.dart::ChatPage" {
+  +_ChatPageState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::chat_page.dart::ChatPage"
+
+class "chat_app::chat_page.dart::_ChatPageState" {
+  +Stream<dynamic> ChatPages
+  +QuerySnapshot<Object?> searchResultSnapshot
+  +Widget ChatPagesList()
+  +void initState()
+  +dynamic getUserInfogetChats()
+  +Widget build()
+}
+
+"chat_app::chat_page.dart::_ChatPageState" o-- "dart::async::Stream<dynamic>"
+"chat_app::chat_page.dart::_ChatPageState" o-- "cloud_firestore::cloud_firestore.dart::QuerySnapshot<Object>"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::chat_page.dart::_ChatPageState"
+
+class "chat_app::chat_page.dart::ChatPagesTile" {
+  +String userName
+  +String ChatPageId
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "chat_app::chat_page.dart::ChatPagesTile"
+
+class "chat_app::main.dart::MyApp" {
+  +State<MyApp> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::main.dart::MyApp"
+
+class "chat_app::main.dart::_MyAppState" {
+  -Future<FirebaseApp> _initialization
+  +bool userIsLoggedIn
+  +void initState()
+  +dynamic getLoggedInState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::main.dart::_MyAppState"
+
+class "chat_app::views::forgot_password.dart::ForgotPassword" {
+  +_ForgotPasswordState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::views::forgot_password.dart::ForgotPassword"
+
+class "chat_app::views::forgot_password.dart::_ForgotPasswordState" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::views::forgot_password.dart::_ForgotPasswordState"
+
+class "chat_app::views::chatrooms.dart::ChatRoom" {
+  +_ChatRoomState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::views::chatrooms.dart::ChatRoom"
+
+class "chat_app::views::chatrooms.dart::_ChatRoomState" {
+  +Stream<dynamic> chatRooms
+  +AsyncSnapshot<dynamic> searchResultSnapshot
+  +Widget chatRoomsList()
+  +void initState()
+  +dynamic getUserInfogetChats()
+  +Widget build()
+}
+
+"chat_app::views::chatrooms.dart::_ChatRoomState" o-- "dart::async::Stream<dynamic>"
+"chat_app::views::chatrooms.dart::_ChatRoomState" o-- "flutter::src::widgets::async.dart::AsyncSnapshot<dynamic>"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::views::chatrooms.dart::_ChatRoomState"
+
+class "chat_app::views::chatrooms.dart::ChatRoomsTile" {
+  +String userName
+  +String chatRoomId
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "chat_app::views::chatrooms.dart::ChatRoomsTile"
+
+class "chat_app::views::search.dart::Search" {
+  +_SearchState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::views::search.dart::Search"
+
+class "chat_app::views::search.dart::_SearchState" {
+  +DatabaseMethods databaseMethods
+  +TextEditingController searchEditingController
+  +QuerySnapshot<Object?> searchResultSnapshot
+  +bool isLoading
+  +bool haveUserSearched
+  +dynamic initiateSearch()
+  +Widget userList()
+  +dynamic sendMessage()
+  +Widget userTile()
+  +dynamic getChatRoomId()
+  +void initState()
+  +Widget build()
+}
+
+"chat_app::views::search.dart::_SearchState" o-- "chat_app::services::database.dart::DatabaseMethods"
+"chat_app::views::search.dart::_SearchState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"chat_app::views::search.dart::_SearchState" o-- "cloud_firestore::cloud_firestore.dart::QuerySnapshot<Object>"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::views::search.dart::_SearchState"
+
+class "chat_app::views::chat.dart::Chat" {
+  +String chatRoomId
+  +_ChatState createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::views::chat.dart::Chat"
+
+class "chat_app::views::chat.dart::_ChatState" {
+  +Stream<QuerySnapshot<Object?>> chats
+  +TextEditingController messageEditingController
+  +AsyncSnapshot<dynamic> searchResultSnapshot
+  +Widget chatMessages()
+  +dynamic addMessage()
+  +void initState()
+  +Widget build()
+}
+
+"chat_app::views::chat.dart::_ChatState" o-- "dart::async::Stream<QuerySnapshot<Object>>"
+"chat_app::views::chat.dart::_ChatState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"chat_app::views::chat.dart::_ChatState" o-- "flutter::src::widgets::async.dart::AsyncSnapshot<dynamic>"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::views::chat.dart::_ChatState"
+
+class "chat_app::views::chat.dart::MessageTile" {
+  +String message
+  +bool sendByMe
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "chat_app::views::chat.dart::MessageTile"
+
+class "chat_app::sign_in.dart::SignIn" {
+  +State<SignIn> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "chat_app::sign_in.dart::SignIn"
+
+class "chat_app::sign_in.dart::_SignInState" {
+  +Auth auth
+  +bool passwordVisible
+  -GlobalKey<FormState> _formKey
+  +bool isLoading
+  +TextEditingController emailTEC
+  +TextEditingController passTEC
+  +dynamic signIn()
+  +Widget build()
+}
+
+"chat_app::sign_in.dart::_SignInState" o-- "chat_app::firebase_con.dart::Auth"
+"chat_app::sign_in.dart::_SignInState" o-- "flutter::src::widgets::framework.dart::GlobalKey<FormState>"
+"chat_app::sign_in.dart::_SignInState" o-- "flutter::src::widgets::editable_text.dart::TextEditingController"
+"flutter::src::widgets::framework.dart::State" <|-- "chat_app::sign_in.dart::_SignInState"
+
+
+@enduml
